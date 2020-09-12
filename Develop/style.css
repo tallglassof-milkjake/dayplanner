@@ -1,5 +1,5 @@
 body {
-  font-family: 'Open Sans', sans-serif;
+  font-family: 'Roboto Slab', serif;;
   font-size: 16px;
   line-height: 1;
 }
@@ -7,10 +7,12 @@ body {
 textarea{
   background: transparent;
   border: none;
-  resize: none;
+  outline: none;
   color: #000000;
   border-left: 1px solid black;
   padding: 10px;
+  overflow: hidden;
+  height: auto;
 }
 
 .jumbotron {
@@ -28,6 +30,10 @@ textarea{
 .time-block{
   text-align: center;
   border-radius: 15px;
+}
+
+hr{
+  width: 70%;
 }
 
 .row {
