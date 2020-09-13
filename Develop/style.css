@@ -23,6 +23,10 @@ textarea{
   border-bottom: 10px solid black;
 }
 
+.form-control{
+  outline: none;
+}
+
 .description{
   white-space: pre-wrap;
 }
