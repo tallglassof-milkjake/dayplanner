@@ -2,7 +2,7 @@ let mySchedule = [
     {
         id: '0',
         time: '08:00',
-        reminder: ' '
+        reminder: ''
     },
     {
         id: '1',
@@ -22,7 +22,7 @@ let mySchedule = [
     {
         id: '4',
         time: '12:00',
-        reminder: ''
+        reminder: 'test'
     },
     {
         id: '5',
@@ -32,7 +32,7 @@ let mySchedule = [
     {
         id: '6',
         time: '14:00',
-        reminder: ''
+        reminder: 'test'
     },
     {
         id: '7',
@@ -50,17 +50,7 @@ let mySchedule = [
         reminder: ''
     },
 ]
-
-console.log(mySchedule);
-
-// Display time to "currentDay"
-function getDate() {
-    let currentDate = moment().format('dddd Do MMMM YYYY');
-    $('#currentDay').text(currentDate);
-    let currentTime = moment().format('HH:mm a');
-    $('#currentTime').text(currentTime);
-}
-
+console.log(mySchedule[5].reminder)
 // Display table
 mySchedule.forEach(function(myHour) {
     let hourRow = $('<table>').attr({
@@ -76,7 +66,9 @@ mySchedule.forEach(function(myHour) {
         'class': 'col-10 description'
     });
 
-    let hourSchedule = $('<textarea>');
+    let hourSchedule = $('<textarea>').attr({
+        'class': 'textArea'
+    });
 
     hourPlan.append(hourSchedule);
     hourSchedule.attr('id', myHour.id);
@@ -86,7 +78,7 @@ mySchedule.forEach(function(myHour) {
             'class': 'past',
         });
     } else if (myHour.time === moment().format('HH')) {
-        mySchedule.attr({
+        hourSchedule.attr({
             'class': 'present'
         });
     } else if (myHour.time > moment().format('HH')) {
@@ -107,27 +99,54 @@ mySchedule.forEach(function(myHour) {
     hourRow.append(hourArea, hourPlan, saveArea);
 });
 
-// Function to save data
-function saveDay() {
-    localStorage.setItem('mySchedule', JSON.stringify(mySchedule));
-};
-
-// Function to display data
-function displayDay() {
-    mySchedule.forEach(function (thisHour) {
-        $(`#${thisHour.id}`).val(thisHour.reminder);
-    });
+// Display time to "currentDay"
+function getDate() {
+    let currentDate = moment().format('dddd Do MMMM YYYY');
+    $('#currentDay').text(currentDate);
+    let currentTime = moment().format('HH:mm a');
+    $('#currentTime').text(currentTime);
 }
 
-$('.saveBtn').on('click', function(event) {
+function loadData() {
+    mySchedule.forEach(function(loadData) {
+        JSON.parse(localStorage.getItem("mySchedule"));
+        $('.description').text(loadData);
+    });
+    
+}
+
+function pushData() {
+    let inputText = $('.textArea').val();
+    mySchedule.push(inputText);
+    let textVal = '';
+    for(i = 0;i < mySchedule.length;i++) {
+        textVal = textVal + mySchedule[i];
+    }
+    console.log(mySchedule[0&&9].reminder);
+}
+
+// Save schedule function
+function saveSchedule() {
+    localStorage.setItem('mySchedule', JSON.stringify(mySchedule));
+    let textArea = $('.textArea');
+    console.log(textArea);
+}
+
+function moveTextToArray() {
+    var newSchedule = $('.future');
+    var scheduleValue = newSchedule.val();
+    
+    console.log(scheduleValue);
+
+}
+
+$('.saveBtn').click(function(event) {
     event.preventDefault();
-    let saveIndex = $(this).siblings('.description').children('.future').attr('.id');
-    mySchedule.reminder[saveIndex] = $(this).siblings('.description').children('.future').val();
-    console.log(saveIndex);
-    // Functions to save and display data here
-    saveDay();
-    displayDay();
-});
+
+    pushData();
+    saveSchedule();
+    moveTextToArray();
+})
 
 
 getDate();

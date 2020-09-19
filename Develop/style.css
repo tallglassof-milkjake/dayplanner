@@ -23,9 +23,24 @@ hr {
   padding: 1em 0 1em 0;
 }
 
-.description, textarea {
+textarea {
   width: 100%;
   height: 3;
   padding: 1;
   border: none;
+}
+
+.past {
+  background-color: #C6C6C6;
+  width: 100%;
+}
+
+.present {
+ background-color: #8aeb5a;
+ width: 100%;
+}
+
+.future {
+  background-color: #7894FC;
+  width: 100%;
 }
