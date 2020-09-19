@@ -1,155 +1,133 @@
-let myDay = [
+let mySchedule = [
     {
-        id: "0",
-        hour: "08",
-        time: "08",
-        meridiem: "am",
-        reminder: ""
+        id: '0',
+        time: '08:00',
+        reminder: ' '
     },
     {
-        id: "1",
-        hour: "09",
-        time: "09",
-        meridiem: "am",
-        reminder: ""
+        id: '1',
+        time: '09:00',
+        reminder: ''
     },
     {
-        id: "2",
-        hour: "10",
-        time: "10",
-        meridiem: "am",
-        reminder: ""
+        id: '2',
+        time: '10:00',
+        reminder: ''
     },
     {
-        id: "3",
-        hour: "11",
-        time: "11",
-        meridiem: "pm",
-        reminder: ""
+        id: '3',
+        time: '11:00',
+        reminder: ''
     },
     {
-        id: "4",
-        hour: "12",
-        time: "12",
-        meridiem: "pm",
-        reminder: ""
+        id: '4',
+        time: '12:00',
+        reminder: ''
     },
     {
-        id: "5",
-        hour: "01",
-        time: "13",
-        meridiem: "pm",
-        reminder: ""
+        id: '5',
+        time: '13:00',
+        reminder: ''
     },
     {
-        id: "6",
-        hour: "02",
-        time: "14",
-        meridiem: "pm",
-        reminder: ""
+        id: '6',
+        time: '14:00',
+        reminder: ''
     },
     {
-        id: "7",
-        hour: "03",
-        time: "15",
-        meridiem: "pm",
-        reminder: ""
+        id: '7',
+        time: '15:00',
+        reminder: ''
     },
     {
-        id: "8",
-        hour: "04",
-        time: "16",
-        meridiem: "pm",
-        reminder: ""
+        id: '8',
+        time: '16:00',
+        reminder: ''
     },
-    
+    {
+        id: '9',
+        time: '17:00',
+        reminder: ''
+    },
 ]
 
-    // Funcion for collecting current date
-    function getHeaderDate() {
-        let currentDate = moment().format('dddd Do MMMM YYYY');
-        $('#currentDay').text(currentDate);
+console.log(mySchedule);
+
+// Display time to "currentDay"
+function getDate() {
+    let currentDate = moment().format('dddd Do MMMM YYYY');
+    $('#currentDay').text(currentDate);
+    let currentTime = moment().format('HH:mm a');
+    $('#currentTime').text(currentTime);
+}
+
+// Display table
+mySchedule.forEach(function(myHour) {
+    let hourRow = $('<table>').attr({
+        'class': 'row'
+    });
+    $('.container').append(hourRow);
+
+    let hourArea = $('<td>').text(myHour.time).attr({
+        'class': 'col-1 hour'
+    });
+
+    let hourPlan = $('<td>').attr({
+        'class': 'col-10 description'
+    });
+
+    let hourSchedule = $('<textarea>');
+
+    hourPlan.append(hourSchedule);
+    hourSchedule.attr('id', myHour.id);
+
+    if (myHour.time < moment().format('HH')) {
+        hourSchedule.attr({
+            'class': 'past',
+        });
+    } else if (myHour.time === moment().format('HH')) {
+        mySchedule.attr({
+            'class': 'present'
+        });
+    } else if (myHour.time > moment().format('HH')) {
+        hourSchedule.attr({
+            'class': 'future'
+        });
     }
 
-    // Function to save data to storage
-    function saveData() {
-        localStorage.setItem('myDay', JSON.stringify(myDay));
-    }
+    let saveButton = $('<i class="far fa-save"></i>');
+    let saveArea = $('<td>').attr({
+        'class': 'col-1 saveArea'
+    });
+    let saveSchedule = $('<button>').attr({
+        'class': 'saveBtn btn btn-outline-primary'
+    });
+    saveArea.append(saveSchedule);
+    saveSchedule.append(saveButton);
+    hourRow.append(hourArea, hourPlan, saveArea);
+});
 
-    //Function to display any data in localStorage
-    function displayData() {
-        myDay.forEach(function (_thisHour) {
-            $(`#${_thisHour.id}`).val(_thisHour.reminder);
-        })
-    }
+// Function to save data
+function saveDay() {
+    localStorage.setItem('mySchedule', JSON.stringify(mySchedule));
+};
 
-    function init() {
-        let storedDay = JSON.parse(localStorage.getItem("myDay"));
-        if ( storedDay) {
-            myDay = storedDay;
-        }
+// Function to display data
+function displayDay() {
+    mySchedule.forEach(function (thisHour) {
+        $(`#${thisHour.id}`).val(thisHour.reminder);
+    });
+}
 
-        saveData();
-        displayData();
-    }
-
-    // Load header date
-    getHeaderDate();
-
-    myDay.forEach(function(thisHour) {
-
-        let hourRow = $('<form>').attr({
-            "class": "row"
-        });
-        $(".container").append(hourRow);
-
-        let hourField = $("<div>").text(`${thisHour.hour}${" "}${thisHour.meridiem}`).attr({
-            "class": "col-md-2 hour"
-        });
-
-        let hourPlan = $("<div>").attr({
-            "class": "col-md-9 description p-0"
-        });
-        let planData = $("<textarea>");
-        hourPlan.append(planData);
-        planData.attr("id", thisHour.id);
-        if (thisHour.time < moment().format("HH")) {
-            planData.attr ({
-                "class": "past",
-            })
-        } else if (thisHour.time === moment().format("HH")) {
-            planData.attr({
-                "class": "present"
-            })
-        } else if (thisHour.time > moment().format("HH")) {
-            planData.attr({
-                "class": "future"
-            })
-        }
-
-        let saveButton = $("<i class='far fa-save'></i>")
-        let savePlan = $("<button>").attr({
-            "class": "col-md-1 saveBtn"
-        });
-        savePlan.append(saveButton);
-        hourRow.append(hourField, hourPlan, savePlan);
-    })
-
-    init();
-
-    $(".saveBtn").on("click", function(event) {
-        event.preventDefault();
-        let saveIndex = $(this).siblings(".description").children(".future").attr(".id");
-        myDay[saveIndex].reminder = $(this).siblings(".description").children(".future").val();
-        console.log(saveIndex);
-        saveData();
-        displayData();
-    })
+$('.saveBtn').on('click', function(event) {
+    event.preventDefault();
+    let saveIndex = $(this).siblings('.description').children('.future').attr('.id');
+    mySchedule.reminder[saveIndex] = $(this).siblings('.description').children('.future').val();
+    console.log(saveIndex);
+    // Functions to save and display data here
+    saveDay();
+    displayDay();
+});
 
 
-
-
-
-
-
-
+getDate();
