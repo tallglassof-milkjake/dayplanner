@@ -2,7 +2,7 @@
 
 This time around we were tasked with programing a nice and easy to use day planner. Kind of like an online diary. 
 
-[Link to day planner](https://tallglassof-milkjake.github.io/dayplanner/)
+[Check it Out!](https://tallglassof-milkjake.github.io/dayplanner/)
 
 The technologies used are as follows;
 * jQuery
